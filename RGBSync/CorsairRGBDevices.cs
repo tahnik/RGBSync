@@ -25,7 +25,6 @@ namespace RGBSync
                     corsair.Initialize(exclusiveAccessIfPossible: true, throwExceptions: true);
                     surface.LoadDevices(corsair);
                     ReactivateCurrentMode();
-                    // Task.Delay(5000).ContinueWith(t => ReactivateCurrentMode());
                     timer.Stop();
                 }
                 catch (Exception)
@@ -37,7 +36,6 @@ namespace RGBSync
 
         void ReactivateCurrentMode()
         {
-            Console.WriteLine("Reactivating the current mode");
             if (currentMode == Mode.GAME)
             {
                 ActivateGameMode();
