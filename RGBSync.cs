@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-
-using OpenHardwareMonitor.Hardware;
 using System.Timers;
 
 namespace RGBSync

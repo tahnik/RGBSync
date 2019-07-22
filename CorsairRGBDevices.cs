@@ -1,9 +1,7 @@
-﻿using RGB.NET.Devices.Corsair;
-using RGB.NET.Core;
-using System.Threading.Tasks;
+﻿using RGB.NET.Core;
+using RGB.NET.Devices.Corsair;
 using System;
 using System.Timers;
-using System.Collections.Generic;
 
 namespace RGBSync
 {
@@ -29,7 +27,8 @@ namespace RGBSync
                     ReactivateCurrentMode();
                     // Task.Delay(5000).ContinueWith(t => ReactivateCurrentMode());
                     timer.Stop();
-                } catch (Exception)
+                }
+                catch (Exception)
                 {
                     Console.WriteLine("Failed to load Corsair SDK");
                 }
@@ -86,7 +85,7 @@ namespace RGBSync
 
         void ToMode(Mode mode)
         {
-            switch(mode)
+            switch (mode)
             {
                 case Mode.WORK:
                     ToCyan();

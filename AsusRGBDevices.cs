@@ -1,5 +1,4 @@
 ﻿using AuraServiceLib;
-using OpenHardwareMonitor.Hardware;
 
 namespace RGBSync
 {

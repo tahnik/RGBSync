@@ -1,9 +1,4 @@
 ﻿using OpenHardwareMonitor.Hardware;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RGBSync
 {
@@ -19,14 +14,14 @@ namespace RGBSync
         {
             get
             {
-                foreach(IHardware hardware in computer.Hardware)
+                foreach (IHardware hardware in computer.Hardware)
                 {
                     hardware.Update();
                     foreach (ISensor sensor in hardware.Sensors)
                     {
                         if (sensor.SensorType == SensorType.Temperature)
                         {
-                            return (float) sensor.Value;
+                            return (float)sensor.Value;
                         }
 
                     }

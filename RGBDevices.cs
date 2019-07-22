@@ -9,15 +9,15 @@ namespace RGBSync
         List<IRGBDevices> activeVendors = new List<IRGBDevices>();
         public RGBDevices(Vendor[] vs)
         {
-            foreach(Vendor v in vs)
+            foreach (Vendor v in vs)
             {
                 AddVendor(v);
             }
         }
-        
+
         void AddVendor(Vendor v)
         {
-            switch(v)
+            switch (v)
             {
                 case Vendor.CORSAIR:
                     activeVendors.Add(new CorsairRGBDevices());
@@ -35,7 +35,7 @@ namespace RGBSync
 
         void IRGBDevices.ActivateGameMode()
         {
-            foreach(IRGBDevices vendor in activeVendors)
+            foreach (IRGBDevices vendor in activeVendors)
             {
                 vendor.ActivateGameMode();
             }
@@ -43,7 +43,7 @@ namespace RGBSync
 
         void IRGBDevices.ActivateWorkMode()
         {
-            foreach(IRGBDevices vendor in activeVendors)
+            foreach (IRGBDevices vendor in activeVendors)
             {
                 vendor.ActivateWorkMode();
             }
