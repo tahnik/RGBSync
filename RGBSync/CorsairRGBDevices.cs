@@ -66,7 +66,7 @@ namespace RGBSync
             int i = 0;
 
             // Slowly change the color
-            Timer timer = new Timer() { Enabled = true, Interval = 10 };
+            Timer timer = new Timer() { Enabled = true, Interval = 25 };
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
                 if (i != COLOR_RANGE_MAX) { i += 1; };
