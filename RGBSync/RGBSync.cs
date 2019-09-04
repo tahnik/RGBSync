@@ -50,7 +50,7 @@ namespace RGBSync
 
         static void Main(string[] args)
         {
-            Vendor[] vendors = { Vendor.CORSAIR, Vendor.ASUS, Vendor.NZXT };
+            Vendor[] vendors = { Vendor.CORSAIR, Vendor.NZXT, Vendor.ASUS };
             IRGBDevices d = new RGBDevices(vendors);
 
             GPU gpu = new GPU();
@@ -62,14 +62,14 @@ namespace RGBSync
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
                 // Console.WriteLine(gpu.Temperature);
-                if (gpu.Temperature > 60 && !gameMode)
+                if (gpu.Temperature > 70 && !gameMode)
                 {
                     d.ActivateGameMode();
 
                     Console.WriteLine("Activated game mode");
                     gameMode = true;
                 }
-                else if (gpu.Temperature <= 60 && gameMode || firstTime)
+                else if (gpu.Temperature <= 70 && gameMode || firstTime)
                 {
                     d.ActivateWorkMode();
 

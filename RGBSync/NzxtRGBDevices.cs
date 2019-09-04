@@ -21,7 +21,7 @@ namespace RGBSync
             pending = true;
             int i = 255;
 
-            Timer timer = new Timer() { Enabled = true, Interval = 25 };
+            Timer timer = new Timer() { Enabled = true, Interval = 17 };
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
                 int toSub = state == State.Initial ? 255 : 255 - i;
@@ -51,7 +51,7 @@ namespace RGBSync
             pending = true;
             int i = 255;
 
-            Timer timer = new Timer() { Enabled = true, Interval = 25 };
+            Timer timer = new Timer() { Enabled = true, Interval = 17 };
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
                 int r = state == State.Initial ? 0 : i;

@@ -40,79 +40,75 @@ namespace RGBSync
 
         void ToCyan(IAuraSyncDeviceCollection devices)
         {
-            foreach (IAuraSyncDevice dev in devices)
+            int i = 255;
+
+            /*
+            Timer timer = new Timer() { Enabled = true, Interval = 25 };
+            timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
-                int i = 255;
-
-                Timer timer = new Timer() { Enabled = true, Interval = 25 };
-                timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
+            */
+            while(true)
+            {
+                foreach (IAuraSyncDevice dev in devices)
                 {
-                    try
+                    foreach (IAuraRgbLight light in dev.Lights)
                     {
-                        foreach (IAuraRgbLight light in dev.Lights)
-                        {
-                            light.Red = state == State.Initial ? (byte) 0 : (byte) i;
+                        light.Red = state == State.Initial ? (byte)0 : (byte)i;
 
-                            byte toSub = state == State.Initial ? (byte) 255 : (byte) (255 - i);
-                            light.Green = toSub;
-                            light.Blue = toSub;
-                        }
-                        dev.Apply();
+                        byte toSub = state == State.Initial ? (byte)255 : (byte)(255 - i);
+                        light.Green = toSub;
+                        light.Blue = toSub;
                     }
-                    catch (Exception exp)
-                    {
-                        Console.WriteLine(exp.Message);
-                    }
+                    dev.Apply();
+                }
 
-                    if (i == 0)
-                    {
-                        timer.Stop();
-                        state = State.Cyan;
-                        pending = false;
-                    }
+                if (i == 0)
+                {
+                    // timer.Stop();
+                    state = State.Cyan;
+                    pending = false;
+                    break;
+                }
 
-                    i--;
-
-                };
+                i--;
             }
+            // };
         }
         void ToRed(IAuraSyncDeviceCollection devices)
         {
-            foreach (IAuraSyncDevice dev in devices)
+            int i = 255;
+
+            /*
+            Timer timer = new Timer() { Enabled = true, Interval = 25 };
+            timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
-                int i = 255;
-
-                Timer timer = new Timer() { Enabled = true, Interval = 25 };
-                timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
+            */
+            while(true)
+            {
+                foreach (IAuraSyncDevice dev in devices)
                 {
-                    try
+                    foreach (IAuraRgbLight light in dev.Lights)
                     {
-                        foreach (IAuraRgbLight light in dev.Lights)
-                        {
-                            byte toSub = state == State.Initial ? (byte) 255 : (byte) (255 - i);
-                            light.Red = toSub;
+                        byte toSub = state == State.Initial ? (byte) 255 : (byte)(255 - i);
+                        light.Red = toSub;
 
-                            light.Green = (byte) i;
-                            light.Blue = (byte) i;
-                        }
-                        dev.Apply();
+                        light.Green = (byte) i;
+                        light.Blue = (byte) i;
                     }
-                    catch(Exception exp)
-                    {
-                        Console.WriteLine(exp.Message);
-                    }
+                    dev.Apply();
+                }
 
-                    if (i == 0)
-                    {
-                        timer.Stop();
-                        state = State.Red;
-                        pending = false;
-                    }
+                if (i == 0)
+                {
+                    // timer.Stop();
+                    state = State.Red;
+                    pending = false;
+                    break;
+                }
 
-                    i--;
-
-                };
+                i--;
             }
+            // };
         }
     }
 }
