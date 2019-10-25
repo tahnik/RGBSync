@@ -10,7 +10,14 @@ namespace RGBSync
 
         bool pending = false;
 
-        IAuraSdk sdk = new AuraSdk();
+        /**
+         * For some reason, once you enumarate a type of device
+         * you cannot enumarate other device types anymore.
+         * Which means that if you want to change color of two different types
+         * of devices differently, you just need to load sdk twice.
+         */
+        IAuraSdk sdkDram = new AuraSdk();
+        IAuraSdk sdkMotherboard = new AuraSdk();
         public AsusRGBDevices() { }
 
         void IRGBDevices.ActivateGameMode()
@@ -18,10 +25,12 @@ namespace RGBSync
             if (pending) { return; }
             pending = true;
 
-            sdk.SwitchMode();
+            sdkDram.SwitchMode();
+            IAuraSyncDeviceCollection dram = sdkDram.Enumerate(0x00070000);
+            ToRedInstant(dram);
 
-            IAuraSyncDeviceCollection motherboard = sdk.Enumerate(0x00000000);
-
+            sdkMotherboard.SwitchMode();
+            IAuraSyncDeviceCollection motherboard = sdkMotherboard.Enumerate(0x00010000);
             ToRed(motherboard);
         }
 
@@ -30,10 +39,12 @@ namespace RGBSync
             if (pending) { return; }
             pending = true;
 
-            sdk.SwitchMode();
+            sdkDram.SwitchMode();
+            IAuraSyncDeviceCollection dram = sdkDram.Enumerate(0x00070000);
+            ToCyanInstant(dram);
 
-            IAuraSyncDeviceCollection motherboard = sdk.Enumerate(0x00000000);
-
+            sdkMotherboard.SwitchMode();
+            IAuraSyncDeviceCollection motherboard = sdkMotherboard.Enumerate(0x00010000);
             ToCyan(motherboard);
         }
 
@@ -42,13 +53,11 @@ namespace RGBSync
         {
             int i = 255;
 
-            /*
             Timer timer = new Timer() { Enabled = true, Interval = 25 };
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
-            */
-            while(true)
-            {
+            //while(true)
+            // {
                 foreach (IAuraSyncDevice dev in devices)
                 {
                     foreach (IAuraRgbLight light in dev.Lights)
@@ -64,27 +73,59 @@ namespace RGBSync
 
                 if (i == 0)
                 {
-                    // timer.Stop();
+                    timer.Stop();
                     state = State.Cyan;
                     pending = false;
-                    break;
+                    // break;
                 }
 
                 i--;
+            //}
+            };
+        }
+        void ToRedInstant(IAuraSyncDeviceCollection devices)
+        {
+            foreach (IAuraSyncDevice dev in devices)
+            {
+                foreach (IAuraRgbLight light in dev.Lights)
+                {
+                    Console.WriteLine(light.Name);
+                    light.Red = 255;
+                    light.Green = 0;
+                    light.Blue = 0;
+                }
+                dev.Apply();
             }
-            // };
+
+            state = State.Red;
+            pending = false;
+        }
+        void ToCyanInstant(IAuraSyncDeviceCollection devices)
+        {
+            foreach (IAuraSyncDevice dev in devices)
+            {
+                foreach (IAuraRgbLight light in dev.Lights)
+                {
+                    Console.WriteLine(light.Name);
+                    light.Red = 0;
+                    light.Green = 255;
+                    light.Blue = 255;
+                }
+                dev.Apply();
+            }
+
+            state = State.Cyan;
+            pending = false;
         }
         void ToRed(IAuraSyncDeviceCollection devices)
         {
             int i = 255;
 
-            /*
             Timer timer = new Timer() { Enabled = true, Interval = 25 };
             timer.Elapsed += delegate (object sender, ElapsedEventArgs e)
             {
-            */
-            while(true)
-            {
+            // while(true)
+            // {
                 foreach (IAuraSyncDevice dev in devices)
                 {
                     foreach (IAuraRgbLight light in dev.Lights)
@@ -100,15 +141,15 @@ namespace RGBSync
 
                 if (i == 0)
                 {
-                    // timer.Stop();
+                    timer.Stop();
                     state = State.Red;
                     pending = false;
-                    break;
+                    // break;
                 }
 
                 i--;
-            }
-            // };
+            // }
+            };
         }
     }
 }

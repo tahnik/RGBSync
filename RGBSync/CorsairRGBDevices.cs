@@ -22,8 +22,9 @@ namespace RGBSync
             {
                 try
                 {
-                    corsair.Initialize(exclusiveAccessIfPossible: true, throwExceptions: true);
-                    surface.LoadDevices(corsair);
+                    corsair.Initialize(throwExceptions: true);
+                    // surface.LoadDevices(corsair);
+                    surface.LoadDevices(new CorsairDeviceProviderLoader().GetDeviceProvider(), RGBDeviceType.Fan);
                     ReactivateCurrentMode();
                     timer.Stop();
                 }
@@ -107,6 +108,7 @@ namespace RGBSync
                 int b = LED.Color.GetB() + 1;
 
                 LED.Color = new Color(a, r, g, b);
+                // LED.Color = new Color(255, 0, 255, 255);
             }
             surface.Update(true);
         }
