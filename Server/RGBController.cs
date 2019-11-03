@@ -7,19 +7,11 @@ using SDKs;
 
 namespace Server
 {
-    enum MODE
-    {
-        INITIAL,
-        WORK,
-        GAME
-    }
-
     class RGBController
     {
 
         int threshold_ = 60;
         int interval_ = 1000;
-        MODE currentMode_ = MODE.INITIAL;
 
         Gigabyte gigabyte_;
         Nvidia nvidia_;
@@ -30,59 +22,46 @@ namespace Server
             nvidia_ = new Nvidia();
             gigabyte_ = new Gigabyte();
             corsair_ = new Corsair();
+        }
 
-            corsair_.Init();
+        public void Init()
+        {
+            Thread g = new Thread(gigabyte_.Init);
+            g.SetApartmentState(ApartmentState.STA);
+            g.Start();
+
+            Thread c = new Thread(corsair_.Init);
+            c.Start();
+
+            g.Join();
+            c.Join();
         }
 
         void ActivateGameMode()
         {
-            if (currentMode_ == MODE.GAME)
-            {
-                return;
-            }
-
-            bool immediate = false;
-
-            if (currentMode_ == MODE.INITIAL)
-            {
-                immediate = true;
-            }
-
-            Thread g = new Thread(() => gigabyte_.ToRed(immediate));
+            Thread g = new Thread(gigabyte_.ToGameMode);
             g.SetApartmentState(ApartmentState.STA);
             g.Start();
 
-            Thread c = new Thread(() => corsair_.ToRed(immediate));
+            Thread c = new Thread(corsair_.ToGameMode);
             c.Start();
 
             g.Join();
             c.Join();
-            currentMode_ = MODE.GAME;
         }
 
         void ActivateWorkMode()
         {
-            if (currentMode_ == MODE.WORK)
-            {
-                return;
-            }
 
-            bool immediate = false;
-            if (currentMode_ == MODE.INITIAL)
-            {
-                immediate = true;
-            }
-
-            Thread g = new Thread(() => gigabyte_.ToCyan(immediate));
+            Thread g = new Thread(gigabyte_.ToWorkMode);
             g.SetApartmentState(ApartmentState.STA);
             g.Start();
 
-            Thread c = new Thread(() => corsair_.ToCyan(immediate));
+            Thread c = new Thread(corsair_.ToWorkMode);
             c.Start();
 
             g.Join();
             c.Join();
-            currentMode_ = MODE.WORK;
         }
 
         public void WatchTemperature()

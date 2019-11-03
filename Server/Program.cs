@@ -10,7 +10,6 @@ namespace Server
 {
     class Program
     {
-        [STAThread]
         static void Main(string[] args)
         {
             /*
@@ -24,8 +23,13 @@ namespace Server
 
             RGBController controller = new RGBController();
 
+            Thread init = new Thread(controller.Init);
+            init.Start();
+
             Thread watcher = new Thread(controller.WatchTemperature);
             watcher.Start();
+
+            init.Join();
             watcher.Join();
         }
     }

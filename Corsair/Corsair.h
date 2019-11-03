@@ -18,19 +18,22 @@
 using namespace System;
 
 namespace SDKs {
-	enum class Color {
-		RED,
-		CYAN
+	enum class Mode {
+		INITIAL,
+		GAME,
+		WORK,
 	};
 
 	public ref class Corsair
 	{
 	public:
-		int Init();
-		int ToRed(bool immediate);
-		int ToCyan(bool immediate);
+		void Init();
+		void ToGameMode();
+		void ToWorkMode();
 	private:
 		int duration_ = 10000;
+		bool initialized_ = false;
+		Mode currentMode_ = Mode::INITIAL;
 
 		std::vector<CorsairLedColor> GetAvailableKeys();
 		const char* GetErrorString(CorsairError error);

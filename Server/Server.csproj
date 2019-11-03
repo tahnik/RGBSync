@@ -71,31 +71,5 @@
       <Name>Nvidia</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Corsair\dlls\CUESDK_2017.dll">
-      <Link>CUESDK_2017.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Gigabyte\dlls\Gigabyte.ULightingEffects.dll">
-      <Link>Gigabyte.ULightingEffects.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Gigabyte\dlls\LedLib2.dll">
-      <Link>LedLib2.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Gigabyte\dlls\SelLEDControl.dll">
-      <Link>SelLEDControl.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Gigabyte\dlls\SMBCtrl.dll">
-      <Link>SMBCtrl.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Gigabyte\dlls\UIEffect.dll">
-      <Link>UIEffect.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

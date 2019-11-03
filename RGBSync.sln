@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Nvidia", "Nvidia\Nvidia.vcxproj", "{D0D6BB15-7783-4BCB-BC5C-22262CE29808}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Corsair", "Corsair\Corsair.vcxproj", "{C241AE44-DBE9-45BD-A20C-A1EE7873D2C5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gigabyte", "Gigabyte\Gigabyte.csproj", "{32E6E959-FA40-4E34-8585-32462B46C6E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{CD0CE900-2C19-4476-B511-F0F21F8835F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x64.Build.0 = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x86.Build.0 = Debug|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x64.ActiveCfg = Release|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x64.Build.0 = Release|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x86.ActiveCfg = Release|Any CPU
-		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x86.Build.0 = Release|Any CPU
 		{D0D6BB15-7783-4BCB-BC5C-22262CE29808}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{D0D6BB15-7783-4BCB-BC5C-22262CE29808}.Debug|x64.ActiveCfg = Debug|x64
 		{D0D6BB15-7783-4BCB-BC5C-22262CE29808}.Debug|x64.Build.0 = Debug|x64
@@ -65,6 +55,24 @@ Global
 		{32E6E959-FA40-4E34-8585-32462B46C6E5}.Release|x64.Build.0 = Release|Any CPU
 		{32E6E959-FA40-4E34-8585-32462B46C6E5}.Release|x86.ActiveCfg = Release|Any CPU
 		{32E6E959-FA40-4E34-8585-32462B46C6E5}.Release|x86.Build.0 = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x64.Build.0 = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Debug|x86.Build.0 = Debug|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x64.ActiveCfg = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x64.Build.0 = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{13785E7A-8D9B-4C54-BA2F-34AE5AC782EA}.Release|x86.Build.0 = Release|Any CPU
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Debug|Any CPU.ActiveCfg = Debug
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Debug|x64.ActiveCfg = Debug
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Debug|x86.ActiveCfg = Debug
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Release|Any CPU.ActiveCfg = Release
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Release|x64.ActiveCfg = Release
+		{CD0CE900-2C19-4476-B511-F0F21F8835F1}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

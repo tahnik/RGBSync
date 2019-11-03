@@ -1,23 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows.Media;
-using System.Threading;
 
 namespace SDKs
 {
     public class Gigabyte
     {
+        enum Mode
+        {
+            INITIAL,
+            GAME,
+            WORK
+        }
+
         private RGBFusion fusion_;
         private const int TIMEPERFRAME = 190;
         private int duration_ = 10000;
-
-        private Color RED = Color.FromRgb(255, 0, 0);
-        private Color CYAN = Color.FromRgb(0, 255, 255);
+        private Mode currentMode_ = Mode.INITIAL;
 
         public Gigabyte()
         {
             fusion_ = new RGBFusion();
+        }
 
+        public void Init()
+        {
             fusion_.Init();
         }
 
@@ -26,43 +32,58 @@ namespace SDKs
             duration_ = duration;
         }
 
-        public void ToRed(bool immediate)
+        public void ToGameMode()
         {
-            if (immediate)
+            if (!fusion_.IsInitialized() || currentMode_ == Mode.GAME)
             {
-                fusion_.SetAllAreas(RED);
                 return;
             }
 
-            for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
+            if (currentMode_ == Mode.INITIAL)
             {
-                int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
-
-                byte r = (byte)val;
-                byte g = (byte)(255 - val);
-                byte b = (byte)(255 - val);
-
-                fusion_.SetAllAreas(Color.FromRgb(r, g, b));
+                fusion_.SetAllAreas(Color.FromRgb(255, 0, 0));
             }
+            else
+            {
+
+                for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
+                {
+                    int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
+
+                    byte r = (byte)val;
+                    byte g = (byte)(255 - val);
+                    byte b = (byte)(255 - val);
+
+                    fusion_.SetAllAreas(Color.FromRgb(r, g, b));
+                }
+            }
+            currentMode_ = Mode.GAME;
         }
-        public void ToCyan(bool immediate)
+        public void ToWorkMode()
         {
-            if (immediate)
+            if (!fusion_.IsInitialized() || currentMode_ == Mode.WORK)
             {
-                fusion_.SetAllAreas(CYAN);
                 return;
             }
 
-            for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
+            if (currentMode_ == Mode.INITIAL)
             {
-                int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
-
-                byte r = (byte)(255 - val);
-                byte g = (byte)val;
-                byte b = (byte)val;
-
-                fusion_.SetAllAreas(Color.FromRgb(r, g, b));
+                fusion_.SetAllAreas(Color.FromRgb(0, 255, 255));
             }
+            else
+            {
+                for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
+                {
+                    int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
+
+                    byte r = (byte)(255 - val);
+                    byte g = (byte)val;
+                    byte b = (byte)val;
+
+                    fusion_.SetAllAreas(Color.FromRgb(r, g, b));
+                }
+            }
+            currentMode_ = Mode.WORK;
         }
     }
 }

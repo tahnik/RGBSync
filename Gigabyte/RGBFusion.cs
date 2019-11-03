@@ -1,73 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Media;
 using SelLEDControl;
-using System.ComponentModel;
 
 namespace SDKs
 {
-    public class LedCommand
-    {
-        [DefaultValue(-1)]
-        public sbyte AreaId { get; set; }
-        [DefaultValue(0)]
-        public sbyte NewMode { get; set; }
-        public Color NewColor { get; set; }
-        [DefaultValue(5)]
-        public sbyte Speed { get; set; }
-        [DefaultValue(9)]
-        public sbyte Bright { get; set; }
-    }
     public class RGBFusion
     {
 
-        private Comm_LED_Fun _ledFun;
-        private bool _scanDone;
-        private List<CommUI.Area_class> _allAreaInfo;
-        private List<CommUI.Area_class> _allExtAreaInfo;
-        private readonly sbyte _changeOperationDelay = 60;
-        private bool _initialized;
+        private Comm_LED_Fun ledFun_;
+        private List<CommUI.Area_class> allAreaInfo_;
+        private List<CommUI.Area_class> allExtAreaInfo_;
+        private bool initialized_;
 
         public bool IsInitialized()
         {
-            return _ledFun != null && _initialized;
+            return ledFun_ != null && initialized_;
         }
 
         private void FillAllAreaInfo()
         {
-            _allAreaInfo = GetAllAreaInfo();
-        }
-
-
-        private List<CommUI.Area_class> GetAllAreaInfo(int profileId = -1)
-        {
-            var str = "Pro1.xml";
-            return CommUI.Inport_from_xml(str, But_Style: null);
+            string areaFilename_ = "Pro1.xml";
+            allAreaInfo_ = CommUI.Inport_from_xml(areaFilename_, But_Style: null);
         }
 
         private void Fill_ExtArea_info()
         {
-            _allExtAreaInfo = GetAllExtAreaInfo();
+            string extAreaFileName_ = "ExtPro1.xml";
+            allExtAreaInfo_ = CommUI.Inport_from_xml(extAreaFileName_, But_Style: null);
         }
-
-        private List<CommUI.Area_class> GetAllExtAreaInfo(int profileId = -1)
-        {
-            List<CommUI.Area_class> allExtAreaInfo;
-            var str = "ExtPro1.xml";
-            allExtAreaInfo = CommUI.Inport_from_xml(str, But_Style: null);
-            return allExtAreaInfo;
-        }
-
         public void Init()
         {
-            DoInit();
+            if (IsInitialized())
+                return;
+
+            bool scanDone = false;
+
+            ledFun_ = new Comm_LED_Fun(false);
+            ledFun_.Apply_ScanPeriphera_Scuuess += () => scanDone = true;
+
+            ledFun_.Ini_LED_Fun();
+
+            ledFun_ = CommUI.Get_Easy_Pattern_color_Key(ledFun_);
+            ledFun_.LEd_Layout.Set_Support_Flag();
+
+            do
+            {
+                Thread.Sleep(millisecondsTimeout: 10);
+            }
+            while (!scanDone);
+
+            ledFun_.Current_Mode = 0; // 1= Advanced 0 = Simple or Ez
+            ledFun_.Led_Ezsetup_Obj.PoweronStatus = 1;
+            ledFun_.Set_Sync(false);
+
+            initialized_ = true;
+
+            FillAllAreaInfo();
+            Fill_ExtArea_info();
         }
 
         public void SetAllAreas(object obj)
         {
+            if (allAreaInfo_ == null || allExtAreaInfo_ == null)
+            {
+                Console.WriteLine("Gigabyte areas are null!");
+                return;
+            }
+
             var patternCombItem = new CommUI.Pattern_Comb_Item
             {
                 Bg_Brush_Solid = { Color = (Color)obj },
@@ -85,42 +87,13 @@ namespace SDKs
             patternCombItem.Speed = 9;
             patternCombItem.Type = 0;
 
-            var allAreaInfo = _allAreaInfo.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null)).ToList();
+            var allAreaInfo = allAreaInfo_.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null)).ToList();
 
-            var allExtAreaInfo = _allExtAreaInfo.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null) { Ext_Area_id = areaInfo.Ext_Area_id }).ToList();
+            var allExtAreaInfo = allExtAreaInfo_.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null) { Ext_Area_id = areaInfo.Ext_Area_id }).ToList();
 
             allAreaInfo.AddRange(allExtAreaInfo);
-            _ledFun.Set_Adv_mode(allAreaInfo, Run_Direct: true);
+            ledFun_.Set_Adv_mode(allAreaInfo, Run_Direct: true);
         }
 
-        private void CallBackLedFunApplyScanPeripheralSuccess() => _scanDone = true;
-
-        private void DoInit()
-        {
-            if (_ledFun != null)
-                return;
-
-            _ledFun = new Comm_LED_Fun(false);
-            _ledFun.Apply_ScanPeriphera_Scuuess += CallBackLedFunApplyScanPeripheralSuccess;
-
-            _ledFun.Ini_LED_Fun();
-
-            _ledFun = CommUI.Get_Easy_Pattern_color_Key(_ledFun);
-
-            _ledFun.LEd_Layout.Set_Support_Flag();
-            do
-            {
-                Thread.Sleep(millisecondsTimeout: 10);
-            }
-            while (!_scanDone);
-
-            _ledFun.Current_Mode = 0; // 1= Advanced 0 = Simple or Ez
-
-            _ledFun.Led_Ezsetup_Obj.PoweronStatus = 1;
-            _initialized = true;
-            _ledFun.Set_Sync(false);
-            FillAllAreaInfo();
-            Fill_ExtArea_info();
-        }
     }
 }

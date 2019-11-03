@@ -46,25 +46,43 @@ namespace SDKs {
 		return colorsVector;
 	}
 
-	int Corsair::Init()
+	void Corsair::Init()
 	{
-		CorsairPerformProtocolHandshake();
+		if (initialized_) { return; }
 
-		if (const auto error = CorsairGetLastError()) {
-			std::cout << "Handshake failed: " << GetErrorString(error) << "\nPress any key tro quit." << std::endl;
-			return 1;
-		}
+		do {
+			CorsairPerformProtocolHandshake();
 
-		colorsVector = GetAvailableKeys();
+			if (const auto error = CorsairGetLastError())
+			{
+				std::cout << "Could not connect to corsair SDK" << std::endl;
+			}
+			else
+			{
+				// Before getting the keys, wait a bit for the iCUE software to load all the devices
+				std::this_thread::sleep_for(std::chrono::milliseconds(2500));
 
-		if (colorsVector.empty()) {
-			return 2;
-		}
+				colorsVector = GetAvailableKeys();
+
+				if (colorsVector.empty()) {
+					std::cout << "Could not get any corsair devices" << std::endl;
+				}
+
+				initialized_ = true;
+			}
+
+			std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		} while (!initialized_);
 	}
 
-	int Corsair::ToRed(bool immediate)
+	void Corsair::ToGameMode()
 	{
-		if (immediate)
+		if (!initialized_ || currentMode_ == Mode::GAME)
+		{
+			return;
+		}
+
+		if (currentMode_ == Mode::INITIAL)
 		{
 			for (auto& ledColor : colorsVector)
 			{
@@ -79,36 +97,41 @@ namespace SDKs {
 				nullptr,
 				nullptr
 			);
-
-			return 0;
 		}
+		else
+		{
+			for (auto x = 0.0; x < 1; x += static_cast<double>(TIMEPERFRAME) / duration_) {
+				auto val = static_cast<int>((1 - pow(x - 1, 2)) * 255);
 
-		for (auto x = 0.0; x < 1; x += static_cast<double>(TIMEPERFRAME) / duration_) {
-			auto val = static_cast<int>((1 - pow(x - 1, 2)) * 255);
+				for (auto& ledColor : colorsVector)
+				{
+					ledColor.r = val;
+					ledColor.g = 255 - val;
+					ledColor.b = 255 - val;
+				}
 
-			for (auto& ledColor : colorsVector)
-			{
-				ledColor.r = val;
-				ledColor.g = 255 - val;
-				ledColor.b = 255 - val;
+				CorsairSetLedsColorsAsync(
+					static_cast<int>(colorsVector.size()),
+					colorsVector.data(),
+					nullptr,
+					nullptr
+				);
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(TIMEPERFRAME));
 			}
-
-			CorsairSetLedsColorsAsync(
-				static_cast<int>(colorsVector.size()),
-				colorsVector.data(),
-				nullptr,
-				nullptr
-			);
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(TIMEPERFRAME));
 		}
 
-		return 0;
+		currentMode_ = Mode::GAME;
 	}
 
-	int Corsair::ToCyan(bool immediate)
+	void Corsair::ToWorkMode()
 	{
-		if (immediate)
+		if (!initialized_ || currentMode_ == Mode::WORK)
+		{
+			return;
+		}
+
+		if (currentMode_ == Mode::INITIAL)
 		{
 
 			for (auto& ledColor : colorsVector)
@@ -124,29 +147,31 @@ namespace SDKs {
 				nullptr,
 				nullptr
 			);
-			return 0;
 		}
-		for (auto x = 0.0; x < 1; x += static_cast<double>(TIMEPERFRAME) / duration_) {
-			auto val = static_cast<int>((1 - pow(x - 1, 2)) * 255);
+		else
+		{
+			for (auto x = 0.0; x < 1; x += static_cast<double>(TIMEPERFRAME) / duration_) {
+				auto val = static_cast<int>((1 - pow(x - 1, 2)) * 255);
 
-			for (auto& ledColor : colorsVector)
-			{
-				ledColor.r = 255 - val;
-				ledColor.g = val;
-				ledColor.b = val;
+				for (auto& ledColor : colorsVector)
+				{
+					ledColor.r = 255 - val;
+					ledColor.g = val;
+					ledColor.b = val;
+				}
+
+				CorsairSetLedsColorsAsync(
+					static_cast<int>(colorsVector.size()),
+					colorsVector.data(),
+					nullptr,
+					nullptr
+				);
+
+				std::this_thread::sleep_for(std::chrono::milliseconds(TIMEPERFRAME));
 			}
-
-			CorsairSetLedsColorsAsync(
-				static_cast<int>(colorsVector.size()),
-				colorsVector.data(),
-				nullptr,
-				nullptr
-			);
-
-			std::this_thread::sleep_for(std::chrono::milliseconds(TIMEPERFRAME));
 		}
 
-		return 0;
+		currentMode_ = Mode::WORK;
 	}
 
 }
