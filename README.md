@@ -1,6 +1,6 @@
 # RGBSync
 
-This project is an attempt to synchronise the RGB colours of Gigabyte and Corsair components. Here are some of components it can change the colours of:
+This project is an attempt to synchronise the RGB colours of Gigabyte and Corsair components. It sets the color to Cyan if the temperature is below 60C, then smoothly tranisitions to Red if the temperature goes above 60C. Here are some of components it can change the colours of:
 
  - Gigabyte Aorus graphics card
  - Non-addressable/Addressable LED strip connected to the Gigabyte motherboard headers (D_LED/LED_C).
