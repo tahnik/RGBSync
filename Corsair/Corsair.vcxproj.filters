@@ -38,4 +38,7 @@
   <ItemGroup>
     <ResourceCompile Include="Corsair.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Server\Program.cs" />
+  </ItemGroup>
 </Project>

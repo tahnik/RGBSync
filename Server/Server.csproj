@@ -38,6 +38,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,4 +75,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y /d  "$(SolutionDir)Corsair\dlls\*.dll" "$(ProjectDir)$(OutDir)"
+
+xcopy /y /d  "%25programfiles%25\GIGABYTE\RGBFusion\*.dll" "$(ProjectDir)$(OutDir)"
+
+xcopy /y /d  "%25programfiles%25\GIGABYTE\RGBFusion\*.xml" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

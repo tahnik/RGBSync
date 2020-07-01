@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Windows.Media;
@@ -64,11 +65,14 @@ namespace SDKs
 
         public void SetAllAreas(object obj)
         {
+            Stopwatch sw = new Stopwatch();
+
             if (allAreaInfo_ == null || allExtAreaInfo_ == null)
             {
                 Console.WriteLine("Gigabyte areas are null!");
                 return;
             }
+            Color color = (Color)obj;
 
             var patternCombItem = new CommUI.Pattern_Comb_Item
             {
@@ -79,20 +83,23 @@ namespace SDKs
             patternCombItem.Sel_Item.Background = patternCombItem.Bg_Brush_Solid;
             patternCombItem.Sel_Item.Content = string.Empty;
             patternCombItem.But_Args = CommUI.Get_Color_Sceenes_class_From_Brush(patternCombItem.Bg_Brush_Solid);
-            patternCombItem.But_Args[0].Scenes_type = 0;
-            patternCombItem.But_Args[1].Scenes_type = 0;
-            patternCombItem.But_Args[0].TransitionsTeime = -1;
-            patternCombItem.But_Args[1].TransitionsTeime = -1;
             patternCombItem.Bri = 9;
             patternCombItem.Speed = 9;
             patternCombItem.Type = 0;
+
 
             var allAreaInfo = allAreaInfo_.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null)).ToList();
 
             var allExtAreaInfo = allExtAreaInfo_.Select(areaInfo => new CommUI.Area_class(patternCombItem, areaInfo.Area_index, mBut_Style: null) { Ext_Area_id = areaInfo.Ext_Area_id }).ToList();
 
-            allAreaInfo.AddRange(allExtAreaInfo);
-            ledFun_.Set_Adv_mode(allAreaInfo, Run_Direct: true);
+            sw.Start();
+            // allAreaInfo.AddRange(allExtAreaInfo);
+            // ledFun_.Set_Adv_mode(allAreaInfo, Run_Direct: true);
+            ledFun_.Set_CS_Effect(0, 9, 9, color.R, color.G, color.B);
+            // ledFun_.Set_Ezmode_Direct(LedLib2.LedMode.StillMode, (Color)obj);
+            sw.Stop();
+
+            Console.WriteLine("Elapsed SetAllAreas={0}", sw.Elapsed);
         }
 
     }
