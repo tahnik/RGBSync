@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="30989452-e91d-4558-8e5f-368dbb33305d" Name="Install" Language="1033" Version="1.0.0.0" Manufacturer="Tahnik" UpgradeCode="d0699f95-a93d-4dac-82c7-7d6cebfe78b6">
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <MediaTemplate />
+
+    <Feature Id="ProductFeature" Title="Install" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="GIGABYTE" Name="GIGABYTE">
+          <Directory Id="INSTALLFOLDER" Name="RGBFusion" />
+        </Directory>
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="ProductComponent" Guid="3af2f16b-ff5a-4ac6-9375-e8ee7981f322">
+        <File Source="$(var.Server.TargetPath)" />
+        <File Source="$(var.Gigabyte.TargetPath)" />
+        <File Source="$(var.Nvidia.TargetPath)" />
+        <File Source="$(var.Corsair.TargetPath)" />
+        <File Source="$(var.Corsair.ProjectDir)\dlls\CUESDK_2017.dll" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
