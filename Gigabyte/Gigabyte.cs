@@ -15,6 +15,8 @@ namespace SDKs
 
         private RGBFusion fusion_;
         private Mode currentMode_ = Mode.INITIAL;
+        private const int TIMEPERFRAME = 152;
+        private int duration_ = 30000;
 
         public Gigabyte()
         {
@@ -39,16 +41,22 @@ namespace SDKs
             }
             else
             {
-                for (double i = 0; i <= 255; i += 1)
-                {
-                    byte r = (byte)i;
-                    byte g = (byte)(255 - i);
-                    byte b = (byte)(255 - i);
+                Stopwatch w = new Stopwatch();
 
+                w.Start();
+                for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
+                {
+                    int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
+
+                    byte r = (byte)val;
+                    byte g = (byte)(255 - val);
+                    byte b = (byte)(255 - val);
 
                     fusion_.SetAllAreas(Color.FromRgb(r, g, b));
                 }
+                w.Stop();
 
+                Console.WriteLine(w.ElapsedMilliseconds);
 
             }
             currentMode_ = Mode.GAME;
@@ -66,11 +74,13 @@ namespace SDKs
             }
             else
             {
-                for (double i = 0; i <= 255; i += 1)
+                for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
                 {
-                    byte r = (byte)(255 - i);
-                    byte g = (byte)i;
-                    byte b = (byte)i;
+                    int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
+
+                    byte r = (byte)(255 - val);
+                    byte g = (byte)val;
+                    byte b = (byte)val;
 
                     fusion_.SetAllAreas(Color.FromRgb(r, g, b));
                 }

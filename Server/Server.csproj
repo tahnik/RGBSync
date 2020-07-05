@@ -109,8 +109,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /y /d  "$(SolutionDir)Corsair\dlls\*.dll" "$(ProjectDir)$(OutDir)"
+
+xcopy /y /d  "%25programfiles%25\GIGABYTE\RGBFusion\*.dll" "$(ProjectDir)$(OutDir)"
+
+xcopy /y /d  "%25programfiles%25\GIGABYTE\RGBFusion\*.xml" "$(ProjectDir)$(OutDir)"</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

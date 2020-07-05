@@ -31,7 +31,7 @@ namespace SDKs {
 		void ToGameMode();
 		void ToWorkMode();
 	private:
-		int duration_ = 40000;
+		int duration_ = 30000;
 		bool initialized_ = false;
 		Mode currentMode_ = Mode::INITIAL;
 
