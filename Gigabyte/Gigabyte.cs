@@ -41,9 +41,6 @@ namespace SDKs
             }
             else
             {
-                Stopwatch w = new Stopwatch();
-
-                w.Start();
                 for (double i = 0; i < 1; i += (double)TIMEPERFRAME / duration_)
                 {
                     int val = (int)((1 - Math.Pow(i - 1, 2)) * 255);
@@ -54,10 +51,6 @@ namespace SDKs
 
                     fusion_.SetAllAreas(Color.FromRgb(r, g, b));
                 }
-                w.Stop();
-
-                Console.WriteLine(w.ElapsedMilliseconds);
-
             }
             currentMode_ = Mode.GAME;
         }
