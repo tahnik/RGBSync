@@ -3,7 +3,7 @@
   <Product Id="*" 
     Name="RGBSync" 
     Language="1033" 
-    Version="1.0.6.0" 
+    Version="1.0.7.0" 
     Manufacturer="Tahnik Mustasin" 
     UpgradeCode="d0699f95-a93d-4dac-82c7-7d6cebfe78b6">
     <Package InstallerVersion="200" 
