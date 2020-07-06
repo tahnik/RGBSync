@@ -124,6 +124,10 @@
         After="InstallFiles">
         NOT WIX_UPGRADE_DETECTED AND NOT Installed
       </Custom>
+      <Custom Action="RemoveScheduledTask" 
+        After="InstallFiles">
+        NOT UPGRADINGPRODUCTCODE AND REMOVE~="ALL"
+      </Custom>
     </InstallExecuteSequence>
 
   </Product>
@@ -136,6 +140,21 @@
       Sequence="execute"
       />
     <CustomAction Id="CreateScheduledTask" 
+      Return="check" 
+      Impersonate="no" 
+      Execute="deferred" 
+      BinaryKey="WixCA" 
+      DllEntry="WixQuietExec" />
+  </Fragment>
+
+  <Fragment>
+    <SetProperty
+      Id="RemoveScheduledTask" 
+      Value="&quot;[SystemFolder]SCHTASKS.EXE&quot; /Delete /TN &quot;RGBSync&quot; /F"
+      Before="RemoveScheduledTask"
+      Sequence="execute"
+      />
+    <CustomAction Id="RemoveScheduledTask" 
       Return="check" 
       Impersonate="no" 
       Execute="deferred" 
