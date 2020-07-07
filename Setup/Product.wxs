@@ -3,7 +3,7 @@
   <Product Id="*" 
     Name="RGBSync" 
     Language="1033" 
-    Version="1.0.7.0" 
+    Version="1.0.19.0" 
     Manufacturer="Tahnik Mustasin" 
     UpgradeCode="d0699f95-a93d-4dac-82c7-7d6cebfe78b6">
     <Package InstallerVersion="200" 
@@ -115,7 +115,7 @@
     <UIRef Id="WixUI_Common" />
 
     <Icon Id="icon.ico" 
-      SourceFile="$(var.Server.ProjectDir)\logo256.ico"/>
+      SourceFile="$(var.App.ProjectDir)\logo256.ico"/>
     <Property Id="ARPPRODUCTICON" 
       Value="icon.ico" />
 
@@ -135,7 +135,7 @@
   <Fragment>
     <SetProperty
       Id="CreateScheduledTask" 
-      Value="&quot;[SystemFolder]SCHTASKS.EXE&quot; /CREATE /SC ONLOGON /TN &quot;RGBSync&quot; /TR &quot;[INSTALLFOLDER]\RGBSyncServer.exe&quot; /RU &quot;NT Authority\System&quot; /RP /RL HIGHEST"
+      Value="&quot;[SystemFolder]SCHTASKS.EXE&quot; /CREATE /SC ONLOGON /TN &quot;RGBSync&quot; /TR &quot;[INSTALLFOLDER]\RGBSync.exe&quot; /RU &quot;NT Authority\System&quot; /RP /RL HIGHEST"
       Before="CreateScheduledTask"
       Sequence="execute"
       />
@@ -187,7 +187,7 @@
         <Shortcut Id="ApplicationStartMenuShortcut" 
           Name="RGBSync" 
           Description="Change RGB based on temperature" 
-          Target="[#RGBSyncServer.exe]" 
+          Target="[#RGBSync.exe]" 
           WorkingDirectory="APPLICATIONROOTDIRECTORY"/>
         <RemoveFolder Id="CleanUpShortCut" 
           Directory="ApplicationProgramsFolder" 
@@ -212,12 +212,13 @@
   <Fragment>
     <ComponentGroup Id="ProductComponents" 
       Directory="INSTALLFOLDER">
-      <Component Id="RGBSyncServer.exe" 
+      <Component Id="RGBSync.exe" 
         Guid="94cc17c7-fc0b-4d3d-bd1c-06ed88133a53">
-        <File Source="$(var.Server.TargetPath)" />
+        <File Source="$(var.App.TargetPath)" />
       </Component>
       <Component Id="ProductComponent" 
         Guid="3af2f16b-ff5a-4ac6-9375-e8ee7981f322">
+        <File Source="$(var.App.ProjectDir)\logo256.ico" />
         <File Source="$(var.Gigabyte.TargetPath)" />
         <File Source="$(var.Nvidia.TargetPath)" />
         <File Source="$(var.Corsair.TargetPath)" />

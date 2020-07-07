@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using SDKs;
 
 namespace RGBSync
@@ -22,65 +24,60 @@ namespace RGBSync
             nvidia_ = new Nvidia();
             gigabyte_ = new Gigabyte();
             corsair_ = new Corsair();
+
         }
 
-        public void Init()
+        public async void Init()
         {
-            Thread g = new Thread(gigabyte_.Init);
-            g.SetApartmentState(ApartmentState.STA);
-            g.Start();
+            ConcurrentBag<Task> tasks = new ConcurrentBag<Task>
+            {
+                Task.Run(() => gigabyte_.Init()),
+                Task.Run(() => corsair_.Init())
+            };
 
-            Thread c = new Thread(corsair_.Init);
-            c.Start();
+            await Task.WhenAll(tasks.ToArray());
 
-            g.Join();
-            c.Join();
+            Console.WriteLine("Successfully initialised RGBSync");
         }
 
-        void ActivateGameMode()
+        private async Task ActivateGameMode()
         {
-            Thread g = new Thread(gigabyte_.ToGameMode);
-            g.SetApartmentState(ApartmentState.STA);
-            g.Start();
+            ConcurrentBag<Task> tasks = new ConcurrentBag<Task>
+            {
+                Task.Run(() => gigabyte_.ToGameMode()),
+                Task.Run(() => corsair_.ToGameMode())
+            };
 
-            Thread c = new Thread(corsair_.ToGameMode);
-            c.Start();
-
-            g.Join();
-            c.Join();
+            await Task.WhenAll(tasks.ToArray());
         }
 
-        void ActivateWorkMode()
+        private async Task ActivateWorkMode()
         {
+            ConcurrentBag<Task> tasks = new ConcurrentBag<Task>
+            {
+                Task.Run(() => gigabyte_.ToWorkMode()),
+                Task.Run(() => corsair_.ToWorkMode())
+            };
 
-            Thread g = new Thread(gigabyte_.ToWorkMode);
-            g.SetApartmentState(ApartmentState.STA);
-            g.Start();
-
-            Thread c = new Thread(corsair_.ToWorkMode);
-            c.Start();
-
-            g.Join();
-            c.Join();
+            await Task.WhenAll(tasks.ToArray());
         }
 
-        public void WatchTemperature()
+        public async void WatchTemperature()
         {
-            while(true)
+            while (true)
             {
                 int currentTemp = nvidia_.GetTemperature();
 
                 if (currentTemp > threshold_)
                 {
-                    ActivateGameMode();
+                    await ActivateGameMode();
                 }
                 else
                 {
-                    ActivateWorkMode();
+                    await ActivateWorkMode();
                 }
 
-                Thread.Sleep(interval_);
-            }
+                await Task.Delay(interval_);            }
         }
     }
 }

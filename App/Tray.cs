@@ -23,6 +23,7 @@ namespace RGBSync
 
             ni.ContextMenu = niMenu;
 
+            // ni.Icon = new Icon("logo256.ico");
             ni.Icon = new Icon("logo256.ico");
             ni.Visible = true;
             ni.Text = "RGBSync";
